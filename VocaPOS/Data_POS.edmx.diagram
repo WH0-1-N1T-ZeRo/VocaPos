@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="da8e5b0799d6443cbe8b012d44fb6744" Name="Diagram1">
+        <EntityTypeShape EntityType="VocaPOSModel.Inventory" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VocaPOSModel.Kategori" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VocaPOSModel.Role" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VocaPOSModel.RolePermissions" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VocaPOSModel.Transaksi" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VocaPOSModel.TransaksiDetail" Width="1.5" PointX="7.5" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VocaPOSModel.User" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <AssociationConnector Association="VocaPOSModel.FK__Inventory__Kateg__29572725" ManuallyRouted="false" />
+        <AssociationConnector Association="VocaPOSModel.FK__Transaksi__Inven__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="VocaPOSModel.FK__RolePermi__RoleI__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="VocaPOSModel.FK__User__RoleID__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="VocaPOSModel.FK__Transaksi__Trans__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="VocaPOSModel.FK__Transaksi__UserI__398D8EEE" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

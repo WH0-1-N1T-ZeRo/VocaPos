@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VocaPOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="InventoryID" />
+          </Key>
+          <Property Name="InventoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NamaItem" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Deskripsi" Type="nvarchar" MaxLength="255" />
+          <Property Name="Harga" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Stok" Type="int" Nullable="false" />
+          <Property Name="KategoriID" Type="int" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="KategoriID" />
+          </Key>
+          <Property Name="KategoriID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NamaKategori" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Deskripsi" Type="nvarchar" MaxLength="255" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NamaRole" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Deskripsi" Type="nvarchar" MaxLength="255" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolePermissions">
+          <Key>
+            <PropertyRef Name="PermissionID" />
+          </Key>
+          <Property Name="PermissionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleID" Type="int" />
+          <Property Name="NamaPermission" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Transaksi">
+          <Key>
+            <PropertyRef Name="TransaksiID" />
+          </Key>
+          <Property Name="TransaksiID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TanggalTransaksi" Type="datetime" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransaksiDetail">
+          <Key>
+            <PropertyRef Name="TransaksiDetailID" />
+          </Key>
+          <Property Name="TransaksiDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransaksiID" Type="int" />
+          <Property Name="InventoryID" Type="int" />
+          <Property Name="Jumlah" Type="int" Nullable="false" />
+          <Property Name="Harga" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NamaLengkap" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="RoleID" Type="int" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Inventory__Kateg__29572725">
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="0..1" />
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategori">
+              <PropertyRef Name="KategoriID" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="KategoriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolePermi__RoleI__34C8D9D1">
+          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="RolePermissions" Type="Self.RolePermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="RolePermissions">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transaksi__Inven__3E52440B">
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="0..1" />
+          <End Role="TransaksiDetail" Type="Self.TransaksiDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="InventoryID" />
+            </Principal>
+            <Dependent Role="TransaksiDetail">
+              <PropertyRef Name="InventoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transaksi__Trans__3D5E1FD2">
+          <End Role="Transaksi" Type="Self.Transaksi" Multiplicity="0..1" />
+          <End Role="TransaksiDetail" Type="Self.TransaksiDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaksi">
+              <PropertyRef Name="TransaksiID" />
+            </Principal>
+            <Dependent Role="TransaksiDetail">
+              <PropertyRef Name="TransaksiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transaksi__UserI__398D8EEE">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Transaksi" Type="Self.Transaksi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Transaksi">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User__RoleID__30F848ED">
+          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VocaPOSModelStoreContainer">
+          <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kategori" EntityType="Self.Kategori" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RolePermissions" EntityType="Self.RolePermissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transaksi" EntityType="Self.Transaksi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransaksiDetail" EntityType="Self.TransaksiDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Inventory__Kateg__29572725" Association="Self.FK__Inventory__Kateg__29572725">
+            <End Role="Kategori" EntitySet="Kategori" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolePermi__RoleI__34C8D9D1" Association="Self.FK__RolePermi__RoleI__34C8D9D1">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RolePermissions" EntitySet="RolePermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transaksi__Inven__3E52440B" Association="Self.FK__Transaksi__Inven__3E52440B">
+            <End Role="Inventory" EntitySet="Inventory" />
+            <End Role="TransaksiDetail" EntitySet="TransaksiDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transaksi__Trans__3D5E1FD2" Association="Self.FK__Transaksi__Trans__3D5E1FD2">
+            <End Role="Transaksi" EntitySet="Transaksi" />
+            <End Role="TransaksiDetail" EntitySet="TransaksiDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transaksi__UserI__398D8EEE" Association="Self.FK__Transaksi__UserI__398D8EEE">
+            <End Role="User" EntitySet="User" />
+            <End Role="Transaksi" EntitySet="Transaksi" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User__RoleID__30F848ED" Association="Self.FK__User__RoleID__30F848ED">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VocaPOSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="InventoryID" />
+          </Key>
+          <Property Name="InventoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NamaItem" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Deskripsi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Harga" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Stok" Type="Int32" Nullable="false" />
+          <Property Name="KategoriID" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Kategori" Relationship="Self.FK__Inventory__Kateg__29572725" FromRole="Inventory" ToRole="Kategori" />
+          <NavigationProperty Name="TransaksiDetail" Relationship="Self.FK__Transaksi__Inven__3E52440B" FromRole="Inventory" ToRole="TransaksiDetail" />
+        </EntityType>
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="KategoriID" />
+          </Key>
+          <Property Name="KategoriID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NamaKategori" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Deskripsi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Inventory" Relationship="Self.FK__Inventory__Kateg__29572725" FromRole="Kategori" ToRole="Inventory" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NamaRole" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Deskripsi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="RolePermissions" Relationship="Self.FK__RolePermi__RoleI__34C8D9D1" FromRole="Role" ToRole="RolePermissions" />
+          <NavigationProperty Name="User" Relationship="Self.FK__User__RoleID__30F848ED" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="RolePermissions">
+          <Key>
+            <PropertyRef Name="PermissionID" />
+          </Key>
+          <Property Name="PermissionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="NamaPermission" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__RolePermi__RoleI__34C8D9D1" FromRole="RolePermissions" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="Transaksi">
+          <Key>
+            <PropertyRef Name="TransaksiID" />
+          </Key>
+          <Property Name="TransaksiID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TanggalTransaksi" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Total" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TransaksiDetail" Relationship="Self.FK__Transaksi__Trans__3D5E1FD2" FromRole="Transaksi" ToRole="TransaksiDetail" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Transaksi__UserI__398D8EEE" FromRole="Transaksi" ToRole="User" />
+        </EntityType>
+        <EntityType Name="TransaksiDetail">
+          <Key>
+            <PropertyRef Name="TransaksiDetailID" />
+          </Key>
+          <Property Name="TransaksiDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransaksiID" Type="Int32" />
+          <Property Name="InventoryID" Type="Int32" />
+          <Property Name="Jumlah" Type="Int32" Nullable="false" />
+          <Property Name="Harga" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Inventory" Relationship="Self.FK__Transaksi__Inven__3E52440B" FromRole="TransaksiDetail" ToRole="Inventory" />
+          <NavigationProperty Name="Transaksi" Relationship="Self.FK__Transaksi__Trans__3D5E1FD2" FromRole="TransaksiDetail" ToRole="Transaksi" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NamaLengkap" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__User__RoleID__30F848ED" FromRole="User" ToRole="Role" />
+          <NavigationProperty Name="Transaksi" Relationship="Self.FK__Transaksi__UserI__398D8EEE" FromRole="User" ToRole="Transaksi" />
+        </EntityType>
+        <Association Name="FK__Inventory__Kateg__29572725">
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="0..1" />
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategori">
+              <PropertyRef Name="KategoriID" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="KategoriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transaksi__Inven__3E52440B">
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="0..1" />
+          <End Role="TransaksiDetail" Type="Self.TransaksiDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="InventoryID" />
+            </Principal>
+            <Dependent Role="TransaksiDetail">
+              <PropertyRef Name="InventoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolePermi__RoleI__34C8D9D1">
+          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="RolePermissions" Type="Self.RolePermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="RolePermissions">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User__RoleID__30F848ED">
+          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transaksi__Trans__3D5E1FD2">
+          <End Role="Transaksi" Type="Self.Transaksi" Multiplicity="0..1" />
+          <End Role="TransaksiDetail" Type="Self.TransaksiDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaksi">
+              <PropertyRef Name="TransaksiID" />
+            </Principal>
+            <Dependent Role="TransaksiDetail">
+              <PropertyRef Name="TransaksiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transaksi__UserI__398D8EEE">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Transaksi" Type="Self.Transaksi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Transaksi">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VocaPOSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Inventory" EntityType="Self.Inventory" />
+          <EntitySet Name="Kategori" EntityType="Self.Kategori" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="RolePermissions" EntityType="Self.RolePermissions" />
+          <EntitySet Name="Transaksi" EntityType="Self.Transaksi" />
+          <EntitySet Name="TransaksiDetail" EntityType="Self.TransaksiDetail" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK__Inventory__Kateg__29572725" Association="Self.FK__Inventory__Kateg__29572725">
+            <End Role="Kategori" EntitySet="Kategori" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transaksi__Inven__3E52440B" Association="Self.FK__Transaksi__Inven__3E52440B">
+            <End Role="Inventory" EntitySet="Inventory" />
+            <End Role="TransaksiDetail" EntitySet="TransaksiDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolePermi__RoleI__34C8D9D1" Association="Self.FK__RolePermi__RoleI__34C8D9D1">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RolePermissions" EntitySet="RolePermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User__RoleID__30F848ED" Association="Self.FK__User__RoleID__30F848ED">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transaksi__Trans__3D5E1FD2" Association="Self.FK__Transaksi__Trans__3D5E1FD2">
+            <End Role="Transaksi" EntitySet="Transaksi" />
+            <End Role="TransaksiDetail" EntitySet="TransaksiDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transaksi__UserI__398D8EEE" Association="Self.FK__Transaksi__UserI__398D8EEE">
+            <End Role="User" EntitySet="User" />
+            <End Role="Transaksi" EntitySet="Transaksi" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VocaPOSModelStoreContainer" CdmEntityContainer="VocaPOSEntities">
+          <EntitySetMapping Name="Inventory">
+            <EntityTypeMapping TypeName="VocaPOSModel.Inventory">
+              <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="InventoryID" ColumnName="InventoryID" />
+                <ScalarProperty Name="NamaItem" ColumnName="NamaItem" />
+                <ScalarProperty Name="Deskripsi" ColumnName="Deskripsi" />
+                <ScalarProperty Name="Harga" ColumnName="Harga" />
+                <ScalarProperty Name="Stok" ColumnName="Stok" />
+                <ScalarProperty Name="KategoriID" ColumnName="KategoriID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kategori">
+            <EntityTypeMapping TypeName="VocaPOSModel.Kategori">
+              <MappingFragment StoreEntitySet="Kategori">
+                <ScalarProperty Name="KategoriID" ColumnName="KategoriID" />
+                <ScalarProperty Name="NamaKategori" ColumnName="NamaKategori" />
+                <ScalarProperty Name="Deskripsi" ColumnName="Deskripsi" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="VocaPOSModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="NamaRole" ColumnName="NamaRole" />
+                <ScalarProperty Name="Deskripsi" ColumnName="Deskripsi" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RolePermissions">
+            <EntityTypeMapping TypeName="VocaPOSModel.RolePermissions">
+              <MappingFragment StoreEntitySet="RolePermissions">
+                <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="NamaPermission" ColumnName="NamaPermission" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transaksi">
+            <EntityTypeMapping TypeName="VocaPOSModel.Transaksi">
+              <MappingFragment StoreEntitySet="Transaksi">
+                <ScalarProperty Name="TransaksiID" ColumnName="TransaksiID" />
+                <ScalarProperty Name="TanggalTransaksi" ColumnName="TanggalTransaksi" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransaksiDetail">
+            <EntityTypeMapping TypeName="VocaPOSModel.TransaksiDetail">
+              <MappingFragment StoreEntitySet="TransaksiDetail">
+                <ScalarProperty Name="TransaksiDetailID" ColumnName="TransaksiDetailID" />
+                <ScalarProperty Name="TransaksiID" ColumnName="TransaksiID" />
+                <ScalarProperty Name="InventoryID" ColumnName="InventoryID" />
+                <ScalarProperty Name="Jumlah" ColumnName="Jumlah" />
+                <ScalarProperty Name="Harga" ColumnName="Harga" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="VocaPOSModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="NamaLengkap" ColumnName="NamaLengkap" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
